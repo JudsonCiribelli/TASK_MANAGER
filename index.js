@@ -6,11 +6,27 @@ const TaskModel = require("./src/models/task.models");
 //inicializando o express
 dotenv.config();
 const app = express();
+app.use(express.json());
 connectToDatabase();
 
-app.get("/", async (req, res) => {
-  const tasks = await TaskModel.find({});
-  res.status(200).send(tasks);
+app.get("/tasks", async (req, res) => {
+  try {
+    const tasks = await TaskModel.find({});
+    res.status(200).send(tasks);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+});
+
+app.post("/tasks", async (req, res) => {
+  try {
+    const newTask = new TaskModel(req.body);
+    await newTask.save();
+
+    res.status(201).send(newTask);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
 });
 //iniciar servidor
 app.listen(800, () => {
