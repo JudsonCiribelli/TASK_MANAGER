@@ -18,31 +18,11 @@ Router.patch("/:id", async (req, res) => {
 });
 
 Router.post("/:id", async (req, res) => {
-  try {
-    const newTask = new TaskModel(req.body);
-    await newTask.save();
-
-    res.status(201).send(newTask);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+  return new TaskControllers(req, res).update();
 });
 
 Router.delete("/:id", async (req, res) => {
-  try {
-    const tasksId = req.params.id;
-
-    const tasksToDelete = await TaskModel.findById(tasksId);
-
-    if (!tasksToDelete) {
-      return res.status(404).send("Esta tarefa não foi encontrada.");
-    }
-
-    const deleteTasks = await TaskModel.findByIdAndDelete(tasksId);
-    res.status(200).send(deleteTasks);
-  } catch (error) {
-    res.status(500).send(error.message);
-  }
+  return new TaskControllers(req, res).deleteTasks();
 });
 
 module.exports = Router;

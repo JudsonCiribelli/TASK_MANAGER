@@ -32,6 +32,17 @@ class TaskControllers {
 
   async create() {
     try {
+      const newTask = new TaskModel(this.req.body);
+      await newTask.save();
+
+      this.res.status(201).send(newTask);
+    } catch (error) {
+      this.res.status(500).send(error.message);
+    }
+  }
+
+  async update() {
+    try {
       const taskId = this.req.params.id;
       const taskData = this.req.body;
 
@@ -56,13 +67,18 @@ class TaskControllers {
       this.res.status(500).send(error.message);
     }
   }
-
-  async update() {
+  async deleteTasks() {
     try {
-      const newTask = new TaskModel(this.req.body);
-      await newTask.save();
+      const tasksId = this.req.params.id;
 
-      this.res.status(201).send(newTask);
+      const tasksToDelete = await TaskModel.findById(tasksId);
+
+      if (!tasksToDelete) {
+        return this.res.status(404).send("Esta tarefa não foi encontrada.");
+      }
+
+      const deleteTasks = await TaskModel.findByIdAndDelete(tasksId);
+      this.res.status(200).send(deleteTasks);
     } catch (error) {
       this.res.status(500).send(error.message);
     }
