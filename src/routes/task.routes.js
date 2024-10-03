@@ -12,11 +12,11 @@ Router.get("/:id", async (req, res) => {
 });
 
 Router.patch("/:id", async (req, res) => {
-  return new TaskControllers(req, res).create();
+  return new TaskControllers(req, res).update();
 });
 
 Router.post("/:id", async (req, res) => {
-  return new TaskControllers(req, res).update();
+  return new TaskControllers(req, res).create();
 });
 
 Router.delete("/:id", async (req, res) => {
