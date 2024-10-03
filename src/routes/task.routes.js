@@ -2,8 +2,6 @@ const express = require("express");
 
 const TaskControllers = require("../controllers/task.controllers");
 const Router = express.Router();
-const TaskModel = require("../models/task.models");
-const { Transaction } = require("mongodb");
 
 Router.get("/", async (req, res) => {
   return new TaskControllers(req, res).getAll();
