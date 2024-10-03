@@ -1,5 +1,6 @@
 const TaskModel = require("../models/task.models");
 const { notFoundError } = require("../errors/mongodb.errors");
+const { notAllowedFillToUpdateError } = require("../errors/general.errors");
 
 class TaskControllers {
   constructor(req, res) {
@@ -60,9 +61,7 @@ class TaskControllers {
         if (allowedUpdates.includes(update)) {
           taskToUpdate[update] = taskData[update];
         } else {
-          return this.res
-            .status(500)
-            .send("Alguns campos inseridos não são editáveis");
+          return notAllowedFillToUpdateError(this.res);
         }
       }
 
